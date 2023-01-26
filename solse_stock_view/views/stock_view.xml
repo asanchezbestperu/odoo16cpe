@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+  	<!-- nueva vista lista -->
+    <record id="stock_productos_tree" model="ir.ui.view">
+        <field name="name">report.sstock.view.tree</field>
+        <field name="model">report.sstock.view</field>
+        <field name="arch" type="xml">
+            <tree create="0">
+                <field name="id" invisible="1"/>
+                <field name="ubicacion_1" invisible="1"/>
+                <field name="product_id" />
+                <field name="cantidad_1" invisible="1"/>
+                <field name="cantidad_2" invisible="1"/>
+                <field name="cantidad_3" invisible="1"/>
+                <field name="cantidad_4" invisible="1"/>
+                <field name="cantidad_5" invisible="1"/>
+                <field name="cantidad_6" invisible="1"/>
+                <field name="cantidad_7" invisible="1"/>
+                <field name="cantidad_8" invisible="1"/>
+                <field name="cantidad_9" invisible="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- nueva vista lista lote -->
+    <record id="stock_productos_lote_tree" model="ir.ui.view">
+        <field name="name">report.sstock.lote.view.tree</field>
+        <field name="model">report.sstock.lote.view</field>
+        <field name="arch" type="xml">
+            <tree create="0">
+                <field name="id" invisible="1"/>
+                <field name="ubicacion_1" invisible="1"/>
+                <field name="product_id"/>
+                <field name="lot_id"/>
+                <field name="cantidad_1" invisible="1"/>
+                <field name="cantidad_2" invisible="1"/>
+                <field name="cantidad_3" invisible="1"/>
+                <field name="cantidad_4" invisible="1"/>
+                <field name="cantidad_5" invisible="1"/>
+                <field name="cantidad_6" invisible="1"/>
+                <field name="cantidad_7" invisible="1"/>
+                <field name="cantidad_8" invisible="1"/>
+                <field name="cantidad_9" invisible="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- accion -->
+    <record id="stock_productos_action" model="ir.actions.act_window">
+            <field name="name">Stock Productos</field>
+            <field name="res_model">report.sstock.view</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="stock_productos_tree"/>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+    </record> 
+
+    <!-- accion lote -->
+    <record id="stock_lote_productos_action" model="ir.actions.act_window">
+            <field name="name">Stock Productos Lote</field>
+            <field name="res_model">report.sstock.lote.view</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="stock_productos_lote_tree"/>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+    </record> 
+
+    <!-- menu -->
+    <menuitem
+        action="stock_productos_action"
+        id="stock_productos_menu"
+        parent="stock.menu_warehouse_report" sequence="170"/> 
+
+     <menuitem
+        action="stock_lote_productos_action"
+        id="stock_productos_lote_menu"
+        parent="stock.menu_warehouse_report" sequence="170"/> 
+
+
+  </data>
+</odoo>

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+	<!-- nueva vista lista -->
+	<record id="stock_productos_form" model="ir.ui.view">
+		<field name="name">report.sstock.inventory.form</field>
+		<field name="model">report.sstock.inventory</field>
+		<field name="arch" type="xml">
+			<form>
+				<header>
+					<field name="state" widget="statusbar" statusbar_visible="draft,iniciado,finalizado" />
+					<button name="iniciar_inventario" string="Iniciar Inventario" states="draft" type="object" />
+					<button name="finalizar_inventario_3" string="Finalizar Inventario" states="iniciado" type="object" confirm="¿Quiere Confirmar el Inventario?" class="oe_highlight"/>
+				</header>
+				<sheet string="Inventario">
+					<h1 class="mt0">
+						<field name="name" class="oe_inline" />
+					</h1>
+					<group>
+						<group>
+							<field name="almacen_id" />
+							<field name="modo_filtro" />
+						</group>
+						<group>
+							<field name="categoria_ids" widget="many2many_tags" attrs="{'invisible': [('modo_filtro','!=', 'categoria')]}" />
+							<field name="fecha_inventario" />
+							<field name="incluir_stock_cero" />
+						</group>
+					</group>
+					<notebook colspan="4">
+						<page string="Detalle de inventario">
+							<field name="detalle_ids" attrs="{'invisible':[('state', 'in', ['draft'])]}">
+								<tree editable="bottom" create="0" string="Detalle de inventario" delete="0">
+									<field name="orden" invisible="1" />
+									<field name="es_cabecera" invisible="1"/>
+									<field name="name" />
+									<field name="lot_id" attrs="{'invisible':[('es_cabecera', '=', True)]}"/>
+									<field name="cant_teorica" readonly="1" force_save="1" attrs="{'invisible':[('es_cabecera', '=', True)]}"/>
+									<field name="cant_real" attrs="{'invisible':[('es_cabecera', '=', True)]}"/>
+									<field name="cant_diferencia" readonly="1" force_save="1" attrs="{'invisible':[('es_cabecera', '=', True)]}"/>
+								</tree>
+							</field>
+						</page>
+					</notebook>
+				</sheet>
+			</form>
+		</field>
+	</record>
+
+	<record id="stock_productos_tree" model="ir.ui.view">
+		<field name="name">report.sstock.inventory.tree</field>
+		<field name="model">report.sstock.inventory</field>
+		<field name="arch" type="xml">
+			<tree create="1">
+				<field name="id" invisible="1"/>
+				<field name="name" />
+				<field name="almacen_id" />
+				<field name="fecha_inventario"/>
+				<field name="incluir_stock_cero"/>
+				<field name="state"/>
+			</tree>
+		</field>
+	</record>
+
+
+	<!-- accion -->
+	<record id="inventario_action" model="ir.actions.act_window">
+		<field name="name">Inventario de Productos</field>
+		<field name="res_model">report.sstock.inventory</field>
+		<field name="type">ir.actions.act_window</field>
+		<field name="view_mode">tree,form</field>
+		<field name="domain">[]</field>
+		<field name="context">{}</field>
+	</record> 
+
+	<!-- menu -->
+	<menuitem
+		action="inventario_action"
+		id="stock_productos_menu"
+		parent="stock.menu_stock_warehouse_mgmt"/> 
+
+
+  </data>
+</odoo>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+	<template id="report_invoice_document_cpe_sale" inherit_id="solse_pe_cpe.cpe_body_print">
+
+		<xpath expr="//div[@name='company_address']" position="replace">
+			<div class="col-4 empresa" name="company_address" style="text-transform: uppercase;">
+				<t t-set="datos" t-value="o.obtener_datos_entidad_emisora()" />
+				<strong><t t-esc="datos['comercial_name']"/></strong>
+				<br/>
+				<t t-esc="datos['street_id']"/>
+				<br/>
+				<br/>
+				<t t-esc="datos['district_id']"/>,
+				<t t-esc="datos['state_id']"/>,
+				<t t-esc="datos['province_id']"/>
+			</div>
+		</xpath>
+
+	</template>
+</odoo>

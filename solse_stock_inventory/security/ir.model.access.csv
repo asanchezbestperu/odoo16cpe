@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_report_sstock_inventory,report.sstock.inventory,model_report_sstock_inventory,,1,1,1,1
+access_report_sstock_inventory_detail,report.sstock.inventory.detail,model_report_sstock_inventory_detail,,1,1,1,1

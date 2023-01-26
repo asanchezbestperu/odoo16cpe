@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+    <record id="pos_config_branch_view_form" model="ir.ui.view">
+        <field name="name">res.branch.form.pos</field>
+        <field name="model">res.branch</field>
+        <field name="inherit_id" ref="solse_multi_branch.branch_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='phone']" position="before">
+                <field name="code"/>
+            </xpath>
+        </field>
+    </record>
+    
+</data>
+</odoo>

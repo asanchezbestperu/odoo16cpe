@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+	<t t-extend="OrderReceipt" t-inherit="solse_pe_pos_report.OrderReceipt" t-inherit-mode="extension" owl="1">
+		<xpath expr="//span[@id='span_usuario']" position="before">
+			<span>Local: </span>
+			<t t-if="order.branch_nombre">
+				<span><t t-esc="order.branch_nombre" /></span> <br />
+			</t>
+			<t t-else="">
+				<span>Principal</span><br />
+			</t>
+		</xpath>
+		<xpath expr="//t[@t-if='receipt.company.contact_address']" position="replace">
+			<t t-if="order.branch_direccion">
+				<div>Dirección: <t t-esc="order.branch_direccion" /></div>
+			</t>
+			<t t-else="">
+				<div>Dirección: <t t-esc="receipt.company.street_name" /></div>
+			</t>			
+		</xpath>
+		<xpath expr="//t[@t-if='receipt.company.phone']" position="replace">
+			<t t-if="order.branch_telefono">
+				<div>Telefono:<t t-esc="order.branch_telefono" /></div>
+			</t>
+			<t t-else="">
+				<div>Telefono:<t t-esc="receipt.company.phone" /></div>
+			</t>
+		</xpath>
+	</t>
+</templates>

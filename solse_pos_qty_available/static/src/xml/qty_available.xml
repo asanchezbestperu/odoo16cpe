@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-name="ProductItem" t-inherit="point_of_sale.ProductItem" t-inherit-mode="extension" owl="1">
+        <xpath expr="//span[hasclass('price-tag')]" position="after">
+            <span class="qty_onhand">
+                <t t-esc="props.product.location_qty_in_pos"/>
+            </span>
+        </xpath>
+    </t>
+
+</templates>

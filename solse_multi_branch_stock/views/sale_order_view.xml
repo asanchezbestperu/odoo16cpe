@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_order_form_branch_stock" model="ir.ui.view">
+            <field name="name">sale.order.branch.stock.form</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="solse_multi_branch.view_order_form_branch"/>
+            <field name="arch" type="xml">
+            	<xpath expr="//field[@name='branch_id']" position="replace">
+                    <field name="branch_id"/>
+                </xpath>
+                <xpath expr="//field[@name='warehouse_id']" position="attributes">
+                    <attribute name="domain">[('company_id', 'in', [company_id, False]), ('branch_id', '=', branch_id)]</attribute>
+                </xpath>
+            </field>
+        </record>
+            
+    </data>
+</odoo>

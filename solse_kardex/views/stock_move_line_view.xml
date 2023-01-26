@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+  	<!-- nueva vista lista -->
+    <record id="view_move_line_custom_tree" model="ir.ui.view">
+        <field name="name">stock.move.line.tree</field>
+        <field name="model">stock.move.line</field>
+        <field name="arch" type="xml">
+            <tree decoration-muted="state == 'cancel'" decoration-danger="(state not in ('cancel','done'))" string="Kardex de productos" create="0" default_order="date desc, order_number desc, tiempo desc">
+                <field name="id" invisible="1"/>
+                <!--<field name="id_char" invisible="0"/>
+                <field name="tiempo2" invisible="0"/>-->
+                <field name="date"/>
+                <field name="origin"/>
+                <field name="product_id"/>
+                <field name="description" invisible="1"/>
+                <field name="type_operation"/>
+                <field name="type_move" invisible="1"/>
+                <field name="balance_previous"/>
+                <field name="qty_in" invisible="0"/>
+                <field name="qty_in_total" invisible="1"/>
+                <field name="qty_out" invisible="0"/>
+                <field name="qty_out_total" invisible="1"/>
+                <field name="balance" invisible="0"/>
+                <field name="product_uom_id" options="{'no_open': True, 'no_create': True}" string="Unidad"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Filtros y agrupación -->
+    <record id="view_move_line_custom_search" model="ir.ui.view">
+        <field name="name">stock.move.line.search.inherit</field>
+        <field name="model">stock.move.line</field>
+        <field name="inherit_id" ref="stock.stock_move_line_view_search"/>
+        <field name="arch" type="xml">
+          <xpath expr="//field[@name='picking_id']" position="replace">
+          </xpath>
+          <xpath expr="//filter[@name='by_state']" position="before">
+            <filter string="Producto" name="by_product_id" domain="[]"  context="{'group_by':'product_id'}"/>
+            <filter string="Unidades" name="by_uom_id" domain="[]" context="{'group_by':'product_uom_id'}"/>
+            <filter string="Tipo de Movimiento" name="by_type_move" domain="[]"  context="{'group_by':'type_move'}"/>
+            <filter string="Creado" name="groupby_create_date" domain="[]" context="{'group_by':'create_date'}"/>
+            <filter string="Ubicación" name="groupby_location" domain="[]" context="{'group_by':'location_id'}"/>
+          </xpath>
+        </field>
+    </record>
+
+    <!-- campos en vista form -->
+    <record id="view_move_line_form" model="ir.ui.view">
+      <field name="model">stock.move.line</field>
+      <field name="inherit_id" ref="stock.view_move_line_form"/>
+      <field name="arch" type="xml">
+        <xpath expr="//field[@name='company_id']" position="before">
+            <div class="oe_button_box" name="button_box">
+              <button class="oe_stat_button" name="force_update" string="Forzar actualización" icon="fa-pencil-square-o" type="object"/>
+          </div>
+        </xpath>
+        <xpath expr="//field[@name='lot_id']" position="after">
+          <field name="picking_id"/>
+          <field name="type_move"/>
+        </xpath>
+        <xpath expr="//group[1]" position="after">
+          <group>
+            <group>
+              <field name="qty_in"/>
+              <field name="qty_out"/>
+            </group>
+            <group>
+              <field name="balance"/>
+              <field name="balance_previous"/>
+            </group>
+          </group>
+        </xpath>
+      </field>
+    </record> 
+
+    <!-- campos en vista vipot -->
+    <record id="solse_kardex_stock_move_line_vipot" model="ir.ui.view">
+      <field name="name">Kardex</field>
+      <field name="model">stock.move.line</field>
+      <field name="arch" type="xml">
+        <pivot string="Kardex">
+          <field name="product_id" type="row"/>
+          <field name="product_uom_id" type="row"/>
+          <field name="date" type="col" interval="month"/>
+          <field name="qty_out" type="measure"/>
+          <field name="qty_in" type="measure"/>
+        </pivot>
+      </field>
+    </record>
+
+    <!-- campos en vista graph -->
+    <record id="solse_kardex_stock_move_line_graph" model="ir.ui.view">
+      <field name="name">Kardex</field>
+      <field name="model">stock.move.line</field>
+      <field name="arch" type="xml">
+        <graph string="Kardex" stacked="False">
+          <field name="date" interval="day" string="Fecha"/>
+          <field name="type_move"/>
+          <field name="product_id"/>
+          <!--<field name="qty_out" type="measure"/>-->
+          <field name="qty_done" type="measure"/>
+        </graph>
+      </field>
+    </record>
+
+    <!-- accion -->
+    <record id="stock_move_line_custom_action" model="ir.actions.act_window">
+            <field name="name">Kardex de productos</field>
+            <field name="res_model">stock.move.line</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_mode">tree,form,pivot,graph</field>
+            <field name="view_id" ref="view_move_line_custom_tree"/>
+            <field name="domain">[('product_id.product_tmpl_id.type', '=', 'product')]</field>
+            <field name="context">{'search_default_done': 1}</field>
+    </record> 
+
+    <!-- menu -->
+    <menuitem
+        action="stock_move_line_custom_action"
+        id="stock_move_line_custom_menu"
+        parent="stock.menu_warehouse_report" sequence="160"/> 
+
+
+
+    <record id="view_move_line_tree" model="ir.ui.view">
+      <field name="name">stock.move.line.tree</field>
+      <field name="model">stock.move.line</field>
+      <field name="inherit_id" ref="stock.view_move_line_tree"/>
+      <field name="arch" type="xml">
+        <xpath expr="//field[@name='qty_done']" position="before">
+          <field name="balance_previous"/>
+        </xpath>
+
+        <xpath expr="//field[@name='qty_done']" position="after">
+          <field name="balance"/>
+        </xpath>
+      </field>
+    </record>
+
+  </data>
+</odoo>
